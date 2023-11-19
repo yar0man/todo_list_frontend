@@ -11,7 +11,9 @@ const SortMenu: React.FC<SortMenuProps> = ({ sortBy, onSortByChange }) => {
     <div className="flex gap-5 items-center font-bold">
     <h3>Sort by:</h3>
 
-    <ul className="text-center menu menu-vertical lg:menu-horizontal bg-base-200 rounded-box">
+    <ul 
+      className="text-center menu menu-vertical lg:menu-horizontal bg-base-200 rounded-box"
+    >
       <li>
         <a
           className={classNames({

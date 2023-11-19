@@ -4,8 +4,8 @@ import Modal from "./Modal";
 import { Todos } from "@/types/todos";
 import { PRIORITIES } from "../constants/priorityOptions";
 
-interface TodoListProps {
-  handleSubmitNewTodo: (event: React.FormEvent<HTMLFormElement>) => void,
+interface AddTodoProps {
+  handleSubmitNewTodo: (e: React.FormEvent<HTMLFormElement>) => void,
   title: string,
   onTitleChange: (title: string) => void,
   priority: number,
@@ -14,7 +14,7 @@ interface TodoListProps {
   onModalOpenChange: (modalOpen: boolean) => void,
 };
 
-const AddTodo: React.FC<TodoListProps> = ({
+const AddTodo: React.FC<AddTodoProps> = ({
   handleSubmitNewTodo,
   title,
   onTitleChange,
@@ -26,7 +26,10 @@ const AddTodo: React.FC<TodoListProps> = ({
 
   return (
     <div>
-      <button onClick={() => onModalOpenChange(true)} className="btn btn-primary w-full">
+      <button
+        onClick={() => onModalOpenChange(true)}
+        className="btn btn-primary w-full"
+      >
         Add new todo
         <AiOutlinePlus className="ml-2" size={18} />
       </button>

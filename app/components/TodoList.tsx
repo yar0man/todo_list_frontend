@@ -18,7 +18,11 @@ const TodoList: React.FC<TodoListProps> = ({ todos, onTodosChange }) => {
         </thead>
         <tbody>
           {todos.map(todo => (
-            <TodoItem key={todo.id} todo={todo} onTodosChange={onTodosChange}/>
+            <TodoItem
+              key={todo.id}
+              todo={todo}
+              onTodosChange={onTodosChange}
+            />
           ))}
         </tbody>
       </table>

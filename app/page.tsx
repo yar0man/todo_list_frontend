@@ -10,9 +10,11 @@ import TodoFilter from "./components/TodoFilter";
 import { SortType } from "@/types/SortType";
 import SortMenu from "./components/SortMenu";
 import { addTodo, getTodos } from "./api/todos";
+import Loader from "./components/Loader";
 
 export default function Home() {
-  const [selectedFilter, setSelectedFilter] = useState<FilterStatus>(FilterStatus.All);
+  const [selectedFilter, setSelectedFilter] 
+  = useState<FilterStatus>(FilterStatus.All);
   const [sortBy, setSortBy] = useState<SortType>(SortType.Default);
   const [todos, setTodos] = useState<Todos[]>([]);
   const [title, setTitle] = useState('');
@@ -79,7 +81,7 @@ export default function Home() {
       </div>
 
       {isLoading && (
-        <span className="loading loading-spinner loading-lg"></span>
+        <Loader />
       )}
 
       {!!filteredTodos.length && (
