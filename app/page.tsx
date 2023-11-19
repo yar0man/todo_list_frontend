@@ -3,7 +3,7 @@
 import AddTodo from "./components/AddTodo";
 import TodoList from "./components/TodoList";
 import { Todos } from "@/types/todos";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { getFilteredTodos } from "./utils/filterTodos";
 import { FilterStatus } from "@/types/FilterStatus";
 import TodoFilter from "./components/TodoFilter";
@@ -33,34 +33,40 @@ export default function Home() {
       .finally(() => setIsLoading(false))
   }, []);
 
-  const filteredTodos = getFilteredTodos(todos, selectedFilter, query, sortBy);
-
-  const handleSubmitNewTodo = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    addTodo({
-      title,
-      priority,
-      completed: false,
-    })
-      .then((newTodo) => {
-        setTodos((currentTodos) => [...currentTodos, newTodo]);
+  const filteredTodos = useMemo(() => {
+    return getFilteredTodos(todos, selectedFilter, query, sortBy);
+  }, [todos, selectedFilter, query, sortBy]);
+  
+  const handleSubmitNewTodo = useCallback(
+    (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+  
+      addTodo({
+        title,
+        priority,
+        completed: false,
       })
-      .catch(() => {
-        throw new Error('Unable to add a todo');
-      })
-
-    setTitle('');
-    setPriority(0);
-    setModalOpen(false);
-  };
+        .then((newTodo) => {
+          setTodos((currentTodos) => [...currentTodos, newTodo]);
+        })
+        .catch(() => {
+          throw new Error('Unable to add a todo');
+        });
+  
+      setTitle('');
+      setPriority(0);
+      setModalOpen(false);
+    },
+    [title, priority, setTodos, setTitle, setPriority, setModalOpen]
+  );
+  
 
   return (
     <main className="max-w-2xl mx-auto mt-4">
       <div className="text-center my-5 flex flex-col gap-4">
         <h1 className="text-2xl font-bold">Todo list App</h1>
 
-        {!!todos.length && (
+        {todos.length > 0 && (
           <TodoFilter
             selectedFilter={selectedFilter}
             onSelectedFilter={setSelectedFilter}
@@ -84,14 +90,14 @@ export default function Home() {
         <Loader />
       )}
 
-      {!!filteredTodos.length && (
+      {filteredTodos.length > 0 && (
         <TodoList
           todos={filteredTodos}
           onTodosChange={setTodos}
         />
       )}
 
-      {!!todos.length && (
+      {todos.length > 0 && (
         <SortMenu
           sortBy={sortBy}
           onSortByChange={setSortBy}

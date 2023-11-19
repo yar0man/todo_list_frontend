@@ -3,7 +3,7 @@ import { useState } from "react";
 import { FiTrash2 } from "react-icons/fi";
 import classNames from 'classnames';
 import Modal from "./Modal";
-import { deleteTodo, updateTodo } from "../api/todos";
+import { deleteTodo as deleteTodoByID, updateTodo } from "../api/todos";
 
 interface TodoProps {
   todo: Todos,
@@ -11,20 +11,19 @@ interface TodoProps {
 };
 
 const TodoItem: React.FC<TodoProps> = ({ todo, onTodosChange }) => {
-  const [openModalDeleted, setOpenModalDeleted] = useState<boolean>(false);
+  const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false);
 
   const removeTodo = (todoId: number) => {
-    deleteTodo(todoId)
+    deleteTodoByID(todoId)
       .then(() => onTodosChange(currentTodos => currentTodos
-        .filter(curTodo => +curTodo.id !== todoId)))
+        .filter(curTodo => Number(curTodo.id) !== todoId)))
     .catch(() => {
       throw new Error('Unable to delete a todo');
     })
   };
 
-  const handleUpdate = (data: Partial<Todos>) => {
-
-    updateTodo(+todo.id, data)
+  const handleTodoUpdate = (data: Partial<Todos>) => {
+    updateTodo(Number(todo.id), data)
       .then((newTodo) => {
         onTodosChange(prevState => {
           return prevState.map(todoItem => {
@@ -41,8 +40,8 @@ const TodoItem: React.FC<TodoProps> = ({ todo, onTodosChange }) => {
       })
   };
 
-  const handleUpdateStatus = () => {
-    handleUpdate({ completed: !todo.completed });
+  const handleTodoStatusUpdate = () => {
+    handleTodoUpdate({ completed: !todo.completed });
   };
 
   return (
@@ -60,7 +59,7 @@ const TodoItem: React.FC<TodoProps> = ({ todo, onTodosChange }) => {
           <input
             type="checkbox"
             checked={todo.completed}
-            onChange={handleUpdateStatus}
+            onChange={handleTodoStatusUpdate}
             className={classNames('checkbox', {
               'checkbox-success': todo.completed
             })}
@@ -76,20 +75,20 @@ const TodoItem: React.FC<TodoProps> = ({ todo, onTodosChange }) => {
           cursor="pointer"
           className="text-red-500 ml-auto"
           size={25}
-          onClick={() => setOpenModalDeleted(true)}
+          onClick={() => setOpenDeleteModal(true)}
         />
         <Modal
-          modalOpen={openModalDeleted}
-          setModalOpen={setOpenModalDeleted}
+          modalOpen={openDeleteModal}
+          setModalOpen={setOpenDeleteModal}
         >
           <h3 className='text-lg'>
             Are you sure, you want to delete this task?
           </h3>
           <div className='modal-action'>
-            <button onClick={() => removeTodo(+todo.id)} className='btn'>
+            <button onClick={() => removeTodo(Number(todo.id))} className='btn'>
               Yes
             </button>
-            <button onClick={() => setOpenModalDeleted(false)} className='btn'>
+            <button onClick={() => setOpenDeleteModal(false)} className='btn'>
               No
             </button>
           </div>

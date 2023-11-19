@@ -3,7 +3,7 @@ import classNames from 'classnames';
 
 interface SortMenuProps {
   sortBy: string,
-  onSortByChange: (val: SortType) => void,
+  onSortByChange: (value: SortType) => void,
 };
 
 const SortMenu: React.FC<SortMenuProps> = ({ sortBy, onSortByChange }) => {

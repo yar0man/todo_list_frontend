@@ -3,9 +3,9 @@ import classNames from 'classnames';
 
 interface TodoFilerProps {
   selectedFilter: string,
-  onSelectedFilter: (val: FilterStatus) => void,
+  onSelectedFilter: (value: FilterStatus) => void,
   query: string,
-  onQueryChange: (val: string) => void,
+  onQueryChange: (value: string) => void,
 };
 
 const TodoFilter: React.FC<TodoFilerProps> = ({ 
@@ -51,6 +51,7 @@ const TodoFilter: React.FC<TodoFilerProps> = ({
           Done
         </a>
       </div>
+
       <div className="flex-none gap-2">
         <div className="form-control">
           <input
